@@ -19,7 +19,7 @@ The Stock Data Scraper is a Python application that scrapes stock data from vari
 
 - [Fundamentus](https://www.fundamentus.com.br/resultado.php): Scrapes fundamental stock data from Fundamentus and generates a `fundamentus.csv` file.
 - [Status Invest](https://statusinvest.com.br/): Downloads a CSV file from Status Invest containing advanced search results and saves it as `status_invest.csv`.
-- [Invest Site](https://www.investsite.com.br/): Downloads an XLSX file from Invest Site containing stock selection data and saves it as `invest_site.xlsx`.    
+- [Invest Site](https://www.investsite.com.br/): Downloads an XLSX file from Invest Site containing stock selection data and convert it to `invest_site.csv`.    
 </p>
 
 ## Configuration
