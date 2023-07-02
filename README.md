@@ -48,7 +48,9 @@ To use the Stock Data Scraper, follow these steps:
 
 2. `cd` to the project directory
 
-3. Run the main script:
+3. `mkdir csv` to create the folder for storing the csv files
+
+4. Run the main script:
 
         python3.10 main.py
 
