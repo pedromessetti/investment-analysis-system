@@ -15,7 +15,7 @@
 ## Description
 
 <p>
-The Stock Data Scraper is a Python application that scrapes stock data from various financial websites and generates CSV files for analysis. It collects data from the following sources:
+The project is a Python application that scrapes stock data from various financial websites and generates CSV files for analysis. It collects data from the following sources:
 
 - [Fundamentus](https://www.fundamentus.com.br/resultado.php): Scrapes fundamental stock data from Fundamentus and generates a `fundamentus.csv` file.
 - [Status Invest](https://statusinvest.com.br/): Downloads a CSV file from Status Invest containing advanced search results and saves it as `status_invest.csv`.
