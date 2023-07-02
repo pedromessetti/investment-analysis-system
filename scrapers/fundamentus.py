@@ -1,6 +1,7 @@
 # scrapers/fundamentus.py
 
-import common
+import csv
+import shutil
 import requests
 from bs4 import BeautifulSoup
 
@@ -20,7 +21,7 @@ def generate_fundamentus_csv():
 
     # Open the CSV file for writing using a context manager
     with open('fundamentus.csv', 'w', newline='') as csvfile:
-        csv_writer = common.csv.writer(csvfile)
+        csv_writer = csv.writer(csvfile)
 
         # Loop through each table row in the HTML content
         for tr in soup.find_all('tr'):
@@ -45,5 +46,5 @@ def generate_fundamentus_csv():
                 csv_writer.writerow(data)
                 
     # Move the fundamentus.csv file to the csv directory
-    common.shutil.move('fundamentus.csv', 'csv/fundamentus.csv')
+    shutil.move('fundamentus.csv', 'csv/fundamentus.csv')
     print('fundamentus.csv successfully generated!')
