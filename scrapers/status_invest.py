@@ -1,41 +1,26 @@
 # scrapers/status_invest.py
 
-import common
-
+import shutil
+import requests
+import os
 
 def download_status_invest_csv():
 
     # Appropriated URL of Status Invest to scrape
-    url = 'https://statusinvest.com.br/acoes/busca-avancada'
+    url = 'https://statusinvest.com.br/category/AdvancedSearchResultExport?search=%7B%22Sector%22%3A%22%22%2C%22SubSector%22%3A%22%22%2C%22Segment%22%3A%22%22%2C%22my_range%22%3A%22-20%3B100%22%2C%22forecast%22%3A%7B%22upsidedownside%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22estimatesnumber%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22revisedup%22%3Atrue%2C%22reviseddown%22%3Atrue%2C%22consensus%22%3A%5B%5D%7D%2C%22dy%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22p_l%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22peg_ratio%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22p_vp%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22p_ativo%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22margembruta%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22margemebit%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22margemliquida%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22p_ebit%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22ev_ebit%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22dividaliquidaebit%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22dividaliquidapatrimonioliquido%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22p_sr%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22p_capitalgiro%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22p_ativocirculante%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22roe%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22roic%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22roa%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22liquidezcorrente%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22pl_ativo%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22passivo_ativo%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22giroativos%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22receitas_cagr5%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22lucros_cagr5%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22liquidezmediadiaria%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22vpa%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22lpa%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%2C%22valormercado%22%3A%7B%22Item1%22%3Anull%2C%22Item2%22%3Anull%7D%7D&CategoryType=1'
+    filename = 'status_invest.csv'
+    # Headers used when making the request
+    headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'}
 
-    driver , wait = common.setup_firefox_driver()
+    # Make the request
+    response = requests.get(url, headers=headers)
 
-    driver.get(url)
-    get_url = driver.current_url
-    wait.until(common.EC.url_to_be(url))
+    if response.status_code == 200:
+        with open(filename, 'wb') as file:
+            file.write(response.content)
+        print(f'{filename} successfully downloaded!')
+    else:
+        print(f'Response Status Code: {filename}')
 
-    if get_url == url:
-        button = wait.until(common.EC.visibility_of_element_located((common.By.CLASS_NAME, 'btn-main.fs-3')))
-    button.click()
-
-    # Wait for the page to load
-    button = wait.until(common.EC.visibility_of_element_located((common.By.CLASS_NAME, 'btn-download.btn.btn-main-green.btn-small.waves-effect.waves-light')))
-    button.click()
-
-    # Wait for the file to be downloaded
-    while True:
-        files = common.os.listdir(common.os.path.expanduser('~/Downloads/'))
-        csv_files = [f for f in files if f.endswith('.csv') and f.startswith('statusinvest')]
-        if len(csv_files) > 0:
-            break
-        time.sleep(1)
-
-    downloads_folder = common.os.path.expanduser('~/Downloads/')
-    # Find the name of the downloaded CSV file in the Downloads folder
-    file_name = next(filename for filename in common.os.listdir(downloads_folder) if filename.endswith('.csv') and filename.startswith('statusinvest'))
-
-    # Move the file from Downloads folder to the current folder
-    common.shutil.move(common.os.path.join(downloads_folder, file_name), 'csv/status_invest.csv')
-    print('status_invest.csv successfully downloaded!')
-
-    driver.quit()
+    # Move the status_invest.csv file to the csv directory
+    shutil.move(filename, 'csv/status_invest.csv')
