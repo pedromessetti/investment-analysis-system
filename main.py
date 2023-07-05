@@ -1,5 +1,3 @@
-# main.py
-
 import shutil
 from scraper import Scraper
 

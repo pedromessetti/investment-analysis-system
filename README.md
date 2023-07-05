@@ -2,10 +2,18 @@
     Investiment Analysis System
 </h1>
 
+<p>
+The Investment Analysis System is a Python application that collects stock data from various financial websites and generates CSV files for analysis. It uses web scraping techniques to gather data from the following sources:
+
+- [Fundamentus](https://www.fundamentus.com.br/resultado.php): Scrapes fundamental stock data from Fundamentus and generates a `fundamentus.csv` file.
+- [Status Invest](https://statusinvest.com.br/): Downloads a CSV file from Status Invest containing advanced search results and saves it as `status_invest.csv`.
+- [Invest Site](https://www.investsite.com.br/): Downloads an XLSX file from Invest Site containing stock selection data and convert it to `invest_site.csv`.    
+</p>
+
 ## Index
 - [Index](#index)
 - [Description](#description)
-- [Configuration](#configuration)
+- [Prerequisites](#prerequisites)
 - [Usage](#usage)
 - [License](#license)
 - [Learnings](#learnings)
@@ -15,14 +23,15 @@
 ## Description
 
 <p>
-The project is a Python application that scrapes stock data from various financial websites and generates CSV files for analysis. It collects data from the following sources:
+The Investment Analysis System is a Python application that helps investors gather and analyze stock data from different sources. By scraping data from Fundamentus, Status Invest, and Invest Site, it provides investors with valuable insights for making informed investment decisions.
 
-- [Fundamentus](https://www.fundamentus.com.br/resultado.php): Scrapes fundamental stock data from Fundamentus and generates a `fundamentus.csv` file.
-- [Status Invest](https://statusinvest.com.br/): Downloads a CSV file from Status Invest containing advanced search results and saves it as `status_invest.csv`.
-- [Invest Site](https://www.investsite.com.br/): Downloads an XLSX file from Invest Site containing stock selection data and convert it to `invest_site.csv`.    
+The system consists of two main components: main.py and scraper.py. The main.py script acts as the entry point and orchestrates the scraping process for each website. It creates instances of the Scraper class defined in scraper.py and calls the appropriate methods to generate or download the CSV files.
+
+The Scraper class encapsulates the functionality for scraping and processing the data. It uses the BeautifulSoup library to parse HTML content and extract relevant information. The generate_csv method generates CSV files by iterating over the HTML structure and writing the data to the files. The download_csv method downloads CSV or XLSX files from the websites and performs necessary modifications before saving them.
 </p>
 
-## Configuration
+
+## Prerequisites
 
 Before running the application, ensure that you have the following prerequisites installed:
 
@@ -33,7 +42,7 @@ Before running the application, ensure that you have the following prerequisites
 
 You can install the dependencies by running the following command:
 
-    pip3 install bs4 requests shutil
+    pip3 install bs4 requests shutils
 
 ## Usage
 
