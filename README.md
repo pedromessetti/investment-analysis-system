@@ -27,20 +27,17 @@ The project is a Python application that scrapes stock data from various financi
 Before running the application, ensure that you have the following prerequisites installed:
 
 - Python 3.10
-- Selenium
 - BeautifulSoup
 - Requests
-- Openpyxl
 - Shutil
-- Webdriver Manager
 
 You can install the dependencies by running the following command:
 
-    pip3 install selenium bs4 requests openpyxl shutil webdriver_manager
+    pip3 install bs4 requests shutil
 
 ## Usage
 
-To use the Stock Data Scraper, follow these steps:
+To use the script, follow these steps:
 
 1. Clone the repository:
 
@@ -54,7 +51,7 @@ To use the Stock Data Scraper, follow these steps:
 
         python3.10 main.py
 
-This will execute the scraping functions and generate the necessary CSV files in the `csv` directory.
+This will execute the scraping functions and store the necessary CSV files in the `csv` directory.
 
 ## License
 
@@ -64,10 +61,8 @@ This project is licensed under the [MIT License](LICENSE).
 
 The project was developed using Python 3.10 and various libraries. Here are some learnings that I have with the following tools:
 
-- [Selenium](https://www.selenium.dev/): A powerful tool for browser automation.
 - [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/): A library for parsing HTML and XML.
 - [Requests](https://docs.python-requests.org/): A library for making HTTP requests.
-- [Openpyxl](https://openpyxl.readthedocs.io/): A library for reading and writing Excel files.
 
 ## Contributing
 
