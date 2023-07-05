@@ -7,29 +7,17 @@ The Investment Analysis System is a Python application that collects stock data 
 
 - [Fundamentus](https://www.fundamentus.com.br/resultado.php): Scrapes fundamental stock data from Fundamentus and generates a `fundamentus.csv` file.
 - [Status Invest](https://statusinvest.com.br/): Downloads a CSV file from Status Invest containing advanced search results and saves it as `status_invest.csv`.
-- [Invest Site](https://www.investsite.com.br/): Downloads an XLSX file from Invest Site containing stock selection data and convert it to `invest_site.csv`.    
+- [Invest Site](https://www.investsite.com.br/): Scrapes stock selection data from Invest Site and generates a `invest_site.csv` file.
 </p>
 
 ## Index
 - [Index](#index)
-- [Description](#description)
 - [Prerequisites](#prerequisites)
 - [Usage](#usage)
 - [License](#license)
 - [Learnings](#learnings)
 - [Contributing](#contributing)
 - [Author](#author)
-
-## Description
-
-<p>
-The Investment Analysis System is a Python application that helps investors gather and analyze stock data from different sources. By scraping data from Fundamentus, Status Invest, and Invest Site, it provides investors with valuable insights for making informed investment decisions.
-
-The system consists of two main components: main.py and scraper.py. The main.py script acts as the entry point and orchestrates the scraping process for each website. It creates instances of the Scraper class defined in scraper.py and calls the appropriate methods to generate or download the CSV files.
-
-The Scraper class encapsulates the functionality for scraping and processing the data. It uses the BeautifulSoup library to parse HTML content and extract relevant information. The generate_csv method generates CSV files by iterating over the HTML structure and writing the data to the files. The download_csv method downloads CSV or XLSX files from the websites and performs necessary modifications before saving them.
-</p>
-
 
 ## Prerequisites
 
