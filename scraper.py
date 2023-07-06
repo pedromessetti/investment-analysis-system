@@ -1,6 +1,7 @@
 import shutil
 import csv
 import requests
+import utils as c
 from bs4 import BeautifulSoup
 
 class Scraper:
@@ -40,9 +41,9 @@ class Scraper:
                     writer.writerows(rows)
             
             shutil.move(self.file_name, 'csv/' + self.file_name)
-            print(self.file_name + ' successfully generated!')
+            print(f'{c.CHECKMARK} {self.file_name}{c.ENDC}')
         else:
-            print(f'Error: Response Status Code {self.response.status_code}')
+            print(f'{c.CROSSMARK}Error: Response Status Code {c.BOLD}{self.response.status_code}{ENDC}')
 
 
     def download_csv(self):
@@ -61,8 +62,7 @@ class Scraper:
                 writer.writerows(modified_rows)
 
             shutil.move(self.file_name, 'csv/' + self.file_name)
-            print(self.file_name + ' successfully downloaded!')
+            print(f'{c.CHECKMARK} {self.file_name}{c.ENDC}')
         else:
-            print(f'Error: Response Status Code {self.response.status_code}')
-
+            print(f'{c.CROSSMARK}Error: Response Status Code {c.BOLD}{self.response.status_code}{c.ENDC}')
     
