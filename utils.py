@@ -9,7 +9,7 @@ WHITE = '\033[37m'
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
 
-CHECKMARK = f"{OKGREEN}✔"
-CROSSMARK = f"{FAIL}✘"
+CHECKMARK = f"{OKGREEN}✔ "
+CROSSMARK = f"{FAIL}✘ "
 STAR = '★'
 CHAIN = f"{WHITE}=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-={ENDC}"

@@ -41,7 +41,7 @@ class Scraper:
                     writer.writerows(rows)
             
             shutil.move(self.file_name, 'csv/' + self.file_name)
-            print(f'{c.CHECKMARK} {self.file_name}{c.ENDC}')
+            print(f'{c.CHECKMARK}{self.file_name}{c.ENDC}')
         else:
             print(f'{c.CROSSMARK}Error: Response Status Code {c.BOLD}{self.response.status_code}{ENDC}')
 
@@ -62,7 +62,8 @@ class Scraper:
                 writer.writerows(modified_rows)
 
             shutil.move(self.file_name, 'csv/' + self.file_name)
-            print(f'{c.CHECKMARK} {self.file_name}{c.ENDC}')
+            print(f'{c.CHECKMARK}{self.file_name}{c.ENDC}')
         else:
             print(f'{c.CROSSMARK}Error: Response Status Code {c.BOLD}{self.response.status_code}{c.ENDC}')
-    
+
+#Fundamentus, InvestSite, StatusInvest

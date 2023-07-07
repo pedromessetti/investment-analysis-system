@@ -7,7 +7,8 @@ class Database:
         self.user = user
         self.password = password
         self.database = database
-        
+
+
     def connect_to_mysql(host, user, password):
         try:
             connection = mysql.connector.connect(
@@ -21,6 +22,7 @@ class Database:
             print(f"{c.CROSSMARK}Failed: {error}{c.ENDC}")
             exit(1)
 
+
     def connect_to_database(connection, database):
         try:
             connection.database = database
@@ -28,6 +30,7 @@ class Database:
         except mysql.connector.Error as error:
             print(f"{c.CROSSMARK}Failed to connect to database '{database}': {error}{c.ENDC}")
             exit(1)
+
 
     def create_database(connection, database):
         cursor = connection.cursor()
@@ -37,12 +40,13 @@ class Database:
         if not result:
             try:
                 cursor.execute(f"CREATE DATABASE {database}")
-                print(f"{c.CHECKMARK}'{database}' Database created{c.ENDC}")
+                print(f"{c.CHECKMARK}Database: '{database}' created{c.ENDC}")
             except mysql.connector.Error as error:
                 print(f"{c.CROSSMARK}Failed to create database: {error}{c.ENDC}")
                 exit(1)
 
         cursor.close()
+
 
     def create_table(connection, table):
         cursor = connection.cursor()
@@ -51,8 +55,33 @@ class Database:
 
         if not result:
             try:
-                cursor.execute(f"CREATE TABLE {table} (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255), price VARCHAR(255), image VARCHAR(255), url VARCHAR(255))")
-                print(f"Table '{table}' successfully created")
+                cursor.execute(f"CREATE TABLE {table} (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    fonte CHAR(37),
+                    data DATE,
+                    ativo VARCHAR(6),
+                    cotacao FLOAT,
+                    pl FLOAT,
+                    pvp FLOAT,
+                    psr FLOAT,
+                    divyield FLOAT,
+                    pativo FLOAT,
+                    pcapgiro FLOAT,
+                    pebit FLOAT,
+                    pativocirc FLOAT,
+                    evebit FLOAT,
+                    evebitda FLOAT,
+                    mrgebit FLOAT,
+                    mrgliq FLOAT,
+                    liqcorr FLOAT,
+                    roic FLOAT,
+                    roe FLOAT,
+                    liq2meses FLOAT,
+                    patrimliq FLOAT,
+                    divbruta FLOAT,
+                    crescrec5anos FLOAT
+                    )")
+                print(f"{c.CHECKMARK}Table: '{table}' created")
             except mysql.connector.Error as error:
                 print(f"{c.CROSSMARK}Failed to create table: {error}{c.ENDC}")
                 exit(1)
