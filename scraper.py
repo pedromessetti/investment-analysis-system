@@ -21,7 +21,7 @@ class Scraper:
                 for tr in soup.find_all('tr'):
                     data = []
                     for th in tr.find_all('th'):
-                        data.append(th.text.strip().upper())
+                        data.append(th.text.strip())
                     if data:
                         writer.writerow(data)
                         continue

@@ -56,29 +56,29 @@ class Database:
         query = f'''
             CREATE TABLE {table} (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                fonte CHAR(37),
+                fonte VARCHAR(13),
                 data DATE,
                 ativo VARCHAR(6),
-                cotacao FLOAT,
-                p_l FLOAT,
-                p_vp FLOAT,
-                psr FLOAT,
-                div_yield FLOAT,
-                p_ativo FLOAT,
-                p_cap_giro FLOAT,
-                p_ebit FLOAT,
-                p_ativo_circ FLOAT,
-                ev_ebit FLOAT,
-                ev_ebitda FLOAT,
-                mrg_ebit FLOAT,
-                mrg_liq FLOAT,
-                liq_corr FLOAT,
-                roic FLOAT,
-                roe FLOAT,
-                liq_2meses FLOAT,
-                patrim_liq FLOAT,
-                div_bruta_patrim FLOAT,
-                cresc_rec_5anos FLOAT
+                cotacao DECIMAL(10,2),
+                p_l DECIMAL(10,2),
+                p_vp DECIMAL(10,2),
+                psr DECIMAL(10,2),
+                div_yield DECIMAL(10,2),
+                p_ativo DECIMAL(10,2),
+                p_cap_giro DECIMAL(10,2),
+                p_ebit DECIMAL(10,2),
+                p_ativo_circ DECIMAL(10,2),
+                ev_ebit DECIMAL(10,2),
+                ev_ebitda DECIMAL(10,2),
+                mrg_ebit DECIMAL(10,2),
+                mrg_liq DECIMAL(10,2),
+                liq_corr DECIMAL(10,2),
+                roic DECIMAL(10,2),
+                roe DECIMAL(10,2),
+                liq_2meses DECIMAL(10,2),
+                patrim_liq DECIMAL(10,2),
+                div_bruta_patrim DECIMAL(10,2),
+                cresc_rec_5anos DECIMAL(10,2)
             )
         '''
 
@@ -95,5 +95,58 @@ class Database:
         cursor.close()
 
 
-#    def insert_data(connection, table, data):
+    def insert_data(self, table, csv_file):
+        connection = self.connect_to_mysql()
+        cursor = connection.cursor()
 
+        with open(csv_file, 'r') as file:
+            csv_data = csv.DictReader(file)
+
+            for row in csv_data:
+                data = date.today()
+
+                query = f'''
+                    INSERT INTO {table} (
+                        fonte, data, ativo, cotacao, p_l, p_vp, psr, div_yield, p_ativo,
+                        p_cap_giro, p_ebit, p_ativo_circ, ev_ebit, ev_ebitda, mrg_ebit,
+                        mrg_liq, liq_corr, roic, roe, liq_2meses, patrim_liq,
+                        div_bruta_patrim, cresc_rec_5anos
+                    ) VALUES (
+                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+                    )
+                '''
+
+                values = (
+                    csv_file.split('.')[0],
+                    data,
+                    row['Papel'] if 'Papel' in row else row['TICKER'],
+                    row['Cotação'] if 'Cotação' in row else row['PRECO'],
+                    row['P/L'],
+                    row['P/VP'],
+                    row['PSR'],
+                    row['Div.Yield'] / 100 if 'Div.Yield' in row else row['DY'] / 100,
+                    row['P/Ativo'] if 'P/Ativo' in row else row['P/ATIVOS'],
+                    row['P/Cap.Giro'] if 'P/Cap.Giro' in row else row['P/CAP. GIRO'],
+                    row['P/EBIT'] if 'P/EBIT' in row else row['P/EBIT'],
+                    row['P/Ativ Circ.Liq'] if 'P/Ativ Circ.Liq' in row else row['P. AT CIR. LIQ.'],
+                    row['EV/EBIT'] if 'EV/EBIT' in row else row['EV/EBIT'],
+                    row['EV/EBITDA'] if 'EV/EBITDA' in row else row['EV/EBITDA'],
+                    row['Mrg Ebit'] / 100 if 'Mrg Ebit' in row else row['MARG. LIQUIDA'] / 100,
+                    row['Mrg. Líq.'] / 100 if 'Mrg. Líq.' in row else row['Margem Líquida'] / 100,
+                    row['Liq. Corr.'],
+                    row['ROIC'] / 100 if 'ROIC' in row else row['ROInvC'] / 100,
+                    row['ROE'],
+                    row['Liq.2meses'],
+                    row['Patrim. Líq'],
+                    row['Dív.Brut/ Patrim.'] if 'Dív.Brut/ Patrim.' in row else row['DIV. LIQ. / PATRI.'],
+                    row['Cresc. Rec.5a'] / 100 if 'Cresc. Rec.5a' in row else row['CAGR RECEITAS 5 ANOS'] / 100
+                )
+
+                try:
+                    cursor.execute(query, values)
+                except mysql.connector.Error as error:
+                    print(f"Failed to insert data: {error}")
+
+        connection.commit()
+        cursor.close()
+        connection.close()

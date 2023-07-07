@@ -10,6 +10,10 @@ class User:
         self.connection = Database.connect_to_mysql(self.host, self.user, self.password)
         Database.connect_to_database(self.connection, self.database)
         self.table = input(f"Table name: {c.BOLD}")
-        Database.create_database(self.connection, self.database)
-        Database.create_table(self.connection, self.table)
-        self.connection.database = self.database
+        self.db = Database(self.host, self.user, self.password, self.database)
+        self.db.create_table(self.table)
+        self.db.insert_data(self.table, 'fundamentus.csv')
+        self.db.insert_data(self.table, 'status_invest.csv')
+        self.db.insert_data(self.table, 'invest_site.csv')
+
+        print("Data inserted successfully.")

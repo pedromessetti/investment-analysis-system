@@ -25,3 +25,4 @@ if __name__ == '__main__':
 
     shutil.rmtree('__pycache__')
     print(f'{c.OKBLUE}End of program.{c.ENDC}')
+    
