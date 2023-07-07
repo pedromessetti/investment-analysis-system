@@ -52,35 +52,38 @@ class Database:
         cursor = connection.cursor()
         cursor.execute(f"SHOW TABLES LIKE '{table}'")
         result = cursor.fetchone()
+        query = f'''
+            CREATE TABLE {table} (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                fonte CHAR(37),
+                data DATE,
+                ativo VARCHAR(6),
+                cotacao FLOAT,
+                p_l FLOAT,
+                p_vp FLOAT,
+                psr FLOAT,
+                div_yield FLOAT,
+                p_ativo FLOAT,
+                p_cap_giro FLOAT,
+                p_ebit FLOAT,
+                p_ativo_circ FLOAT,
+                ev_ebit FLOAT,
+                ev_ebitda FLOAT,
+                mrg_ebit FLOAT,
+                mrg_liq FLOAT,
+                liq_corr FLOAT,
+                roic FLOAT,
+                roe FLOAT,
+                liq_2meses FLOAT,
+                patrim_liq FLOAT,
+                div_bruta_patrim FLOAT,
+                cresc_rec_5anos FLOAT
+            )
+        '''
 
         if not result:
             try:
-                cursor.execute(f"CREATE TABLE {table} (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    fonte CHAR(37),
-                    data DATE,
-                    ativo VARCHAR(6),
-                    cotacao FLOAT,
-                    pl FLOAT,
-                    pvp FLOAT,
-                    psr FLOAT,
-                    divyield FLOAT,
-                    pativo FLOAT,
-                    pcapgiro FLOAT,
-                    pebit FLOAT,
-                    pativocirc FLOAT,
-                    evebit FLOAT,
-                    evebitda FLOAT,
-                    mrgebit FLOAT,
-                    mrgliq FLOAT,
-                    liqcorr FLOAT,
-                    roic FLOAT,
-                    roe FLOAT,
-                    liq2meses FLOAT,
-                    patrimliq FLOAT,
-                    divbruta FLOAT,
-                    crescrec5anos FLOAT
-                    )")
+                cursor.execute(query)
                 print(f"{c.CHECKMARK}Table: '{table}' created")
             except mysql.connector.Error as error:
                 print(f"{c.CROSSMARK}Failed to create table: {error}{c.ENDC}")
