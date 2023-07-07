@@ -65,5 +65,3 @@ class Scraper:
             print(f'{c.CHECKMARK}{self.file_name}{c.ENDC}')
         else:
             print(f'{c.CROSSMARK}Error: Response Status Code {c.BOLD}{self.response.status_code}{c.ENDC}')
-
-#Fundamentus, InvestSite, StatusInvest
