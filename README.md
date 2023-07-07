@@ -27,10 +27,11 @@ Before running the application, ensure that you have the following prerequisites
 - BeautifulSoup
 - Requests
 - Shutil
+- MySQL
 
 You can install the dependencies by running the following command:
 
-    pip3 install bs4 requests shutils
+    pip3 install bs4 requests shutils mysql-server
 
 ## Usage
 
@@ -42,9 +43,7 @@ To use the script, follow these steps:
 
 2. `cd` to the project directory
 
-3. `mkdir csv` to create the folder for storing the csv files
-
-4. Run the main script:
+3. Run the main script:
 
         python3.10 main.py
 

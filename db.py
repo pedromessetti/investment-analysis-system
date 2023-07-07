@@ -1,5 +1,6 @@
 import mysql.connector
 import utils as c
+from datetime import date
 
 class Database:
     def __init__(self, host, user, password, database):
@@ -16,7 +17,7 @@ class Database:
                 user=user,
                 password=password
             )
-            print("Connected to MySQL")
+            print(f"\n{c.OKGREEN}MySQL Connection {c.OK}{c.ENDC}\n")
             return connection
         except mysql.connector.Error as error:
             print(f"{c.CROSSMARK}Failed: {error}{c.ENDC}")
@@ -26,7 +27,7 @@ class Database:
     def connect_to_database(connection, database):
         try:
             connection.database = database
-            print(f"Connected to '{database}' database")
+            print(f"Database: {c.BOLD}{database}{c.ENDC}\n{c.OKGREEN}Connection {c.OK}{c.ENDC}\n")
         except mysql.connector.Error as error:
             print(f"{c.CROSSMARK}Failed to connect to database '{database}': {error}{c.ENDC}")
             exit(1)
@@ -40,7 +41,7 @@ class Database:
         if not result:
             try:
                 cursor.execute(f"CREATE DATABASE {database}")
-                print(f"{c.CHECKMARK}Database: '{database}' created{c.ENDC}")
+                print(f"{c.CHECKMARK}Database '{database}' created{c.ENDC}")
             except mysql.connector.Error as error:
                 print(f"{c.CROSSMARK}Failed to create database: {error}{c.ENDC}")
                 exit(1)
@@ -84,9 +85,15 @@ class Database:
         if not result:
             try:
                 cursor.execute(query)
-                print(f"{c.CHECKMARK}Table: '{table}' created")
+                print(f"{c.CHECKMARK}Table '{table}' created")
             except mysql.connector.Error as error:
                 print(f"{c.CROSSMARK}Failed to create table: {error}{c.ENDC}")
                 exit(1)
+        else:
+            print(f"{c.WARNING}Table '{table}' already exists{c.ENDC}")
 
         cursor.close()
+
+
+#    def insert_data(connection, table, data):
+

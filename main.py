@@ -1,4 +1,5 @@
 import shutil
+import os
 import getpass
 import utils as c
 from scraper import Scraper
@@ -10,6 +11,11 @@ invest_site_url = 'https://www.investsite.com.br/selecao_acoes.php?dt_arr=%255B%
 
 if __name__ == '__main__':
     print(f'{c.OKBLUE}Starting scraping ...{c.ENDC}')
+
+    # Create a directory named csv if not exists to store the csv files
+    if not os.path.exists('csv'):
+        os.mkdir('csv')
+
     Scraper(fundamentus_url, 'fundamenus.csv').generate_csv()
     Scraper(status_invest_url, 'status_invest.csv').download_csv()
     Scraper(invest_site_url, 'invest_site.csv').generate_csv()
