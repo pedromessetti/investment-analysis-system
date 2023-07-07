@@ -6,6 +6,7 @@ class User:
         self.password = password
         self.host = 'localhost'
         self.database = 'investment_analysis'
+        self.table = 'tb_scraping'
         self.connection = Database.connect_to_mysql(self.host, self.user, self.password)
         Database.create_database(self.connection, self.database)
         Database.connect_to_database(self.connection, self.database)

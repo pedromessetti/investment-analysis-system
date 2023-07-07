@@ -1,5 +1,6 @@
-import utils as c
 import shutil
+import getpass
+import utils as c
 from scraper import Scraper
 from user import User
 
@@ -14,7 +15,7 @@ if __name__ == '__main__':
     Scraper(invest_site_url, 'invest_site.csv').generate_csv()
 
     print(f'{c.OKBLUE}Connecting to database ...{c.ENDC}')
-    User('root', '')
+    User(input('Enter user: '), getpass.getpass('Enter password: '))
 
     shutil.rmtree('__pycache__')
     print(f'{c.OKBLUE}End of program.{c.ENDC}')
