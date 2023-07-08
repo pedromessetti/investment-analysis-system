@@ -2,6 +2,7 @@ import shutil
 import csv
 import requests
 import utils as c
+from datetime import date
 from bs4 import BeautifulSoup
 
 class Scraper:
@@ -21,7 +22,7 @@ class Scraper:
                 for tr in soup.find_all('tr'):
                     data = []
                     for th in tr.find_all('th'):
-                        data.append(th.text.strip())
+                        data.append(th.text.strip().lower().replace('.',' ').replace(' ', '_').replace('/', '_').replace('preço', 'p'))
                     if data:
                         writer.writerow(data)
                         continue
@@ -31,7 +32,7 @@ class Scraper:
                     except ValueError:
                         writer.writerow(data)
 
-            if self.file_name == 'invest_site.csv':
+            if self.file_name == f'InvestSite_{date.today()}.csv':
                 with open(self.file_name, 'r') as csv_file:
                     reader = csv.reader(csv_file)
                     rows = list(reader)[6:]
@@ -43,7 +44,7 @@ class Scraper:
             shutil.move(self.file_name, 'csv/' + self.file_name)
             print(f'{c.CHECKMARK}{self.file_name}{c.ENDC}')
         else:
-            print(f'{c.CROSSMARK}Error: Response Status Code {c.BOLD}{self.response.status_code}{ENDC}')
+            print(f'{c.CROSSMARK}Error: Response Status Code {c.BOLD}{self.response.status_code}{c.ENDC}')
 
 
     def download_csv(self):
@@ -54,8 +55,11 @@ class Scraper:
             with open(self.file_name, 'r') as csv_file:
                 reader = csv.reader(csv_file, delimiter=';')
                 modified_rows = []
-                for row in reader:
-                    modified_rows.append([cell.replace('.', '').replace(',', '.') if cell else '0' for cell in row])
+                for i, row in enumerate(reader):
+                    if i == 0:
+                        modified_rows.append([cell.strip().lower().replace('.', '').replace(' ', '_').replace('/', '_') for cell in row])
+                    else:
+                        modified_rows.append([cell.replace('.', '').replace(',', '.') if cell else '0' for cell in row])
 
             with open(self.file_name, 'w', newline='') as csv_file:
                 writer = csv.writer(csv_file)

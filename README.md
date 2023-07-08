@@ -5,7 +5,7 @@
 <p>
 The Investment Analysis System is a Python application that collects stock data from various financial websites and generates CSV files for analysis. It uses web scraping techniques to gather data from the following sources:
 
-- [Fundamentus](https://www.fundamentus.com.br/resultado.php): Scrapes fundamental stock data from Fundamentus and generates a `fundamentus.csv` file.
+- [Fundamentus](https://www.Fundamentus.com.br/resultado.php): Scrapes fundamental stock data from Fundamentus and generates a `Fundamentus.csv` file.
 - [Status Invest](https://statusinvest.com.br/): Downloads a CSV file from Status Invest containing advanced search results and saves it as `status_invest.csv`.
 - [Invest Site](https://www.investsite.com.br/): Scrapes stock selection data from Invest Site and generates a `invest_site.csv` file.
 </p>
