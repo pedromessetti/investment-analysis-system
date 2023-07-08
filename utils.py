@@ -1,20 +1,53 @@
+BOLD = '\033[1m'
+UNDERLINE = '\033[4m'
+
 ENDC = '\033[0m' # End of color
-HEADER = '\033[95m'
 OKBLUE = '\033[94m'
 OKGREEN = '\033[92m' # Success
 FAIL = '\033[91m' # Error
 WARNING = f'{ENDC}\033[93m' # Warning
+PURPLE = '\033[95m'
 WHITE = '\033[37m'
-BOLD = '\033[1m'
-UNDERLINE = '\033[4m'
+GRAY = '\033[90m'
+YELLOW = '\033[33m'
+RED = '\033[31m'
+GREEN = '\033[32m'
+BLUE = '\033[34m'
+CYAN = '\033[36m'
+
 
 CHECKMARK = f"{ENDC}{OKGREEN}✔ "
 CROSSMARK = f"{ENDC}{FAIL}✘ "
-STAR = '★'
-CHAIN = f"{WHITE}=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-={ENDC}"
+STAR = F"{BOLD}{YELLOW}★ {ENDC}"
+CHAIN = f"{BOLD}{WHITE}=-=-=-=-=-=-=-=-=-=-=-=-=-={ENDC}"
 OK = f"{ENDC}{OKGREEN}[{WHITE}OK{OKGREEN}]"
 
+options = f"""{BOLD}{BLUE}[{WHITE} 1 {BLUE}]{WHITE} - {PURPLE}Create table{ENDC}
+{BOLD}{BLUE}[{WHITE} 2 {BLUE}]{WHITE} - {PURPLE}Insert data{ENDC}
+{BOLD}{BLUE}[{WHITE} 3 {BLUE}]{WHITE} - {PURPLE}Delete table{ENDC}
+{BOLD}{FundamentusBLUE}[{WHITE} 4 {BLUE}]{WHITE} - {PURPLE}Show tables{ENDC}
+{BOLD}{BLUE}[{WHITE} 0 {BLUE}]{WHITE} - {PURPLE}Exit{ENDC}"""
+
+MENU = f"""
+{BOLD}{CHAIN}
+{options}
+{BOLD}{CHAIN}
+"""
+
 import pandas as pd
+import shutil
+import os
+
+
+def clear_terminal():
+    # Clear the terminal
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def exit_program():
+    shutil.rmtree('__pycache__')
+    print(f"\n{ENDC}{GRAY}Quit program.{ENDC}")
+    exit(0)
+
 
 class Cleaner:
     def __init__(self, df):

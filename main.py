@@ -1,6 +1,4 @@
-import shutil
 import os
-import getpass
 import utils as c
 from datetime import date
 from scraper import Scraper
@@ -12,7 +10,7 @@ invest_site_url = 'https://www.investsite.com.br/selecao_acoes.php?dt_arr=%255B%
 
 if __name__ == '__main__':
     if input('Do you want to run the scraper? (y/n): ').lower() == 'y':
-        print(f'{c.OKBLUE}Starting scraping ...{c.ENDC}')
+        print(f'\n{c.OKBLUE}Starting scraping ...{c.ENDC}\n')
 
         if not os.path.exists('csv'):
             os.mkdir('csv')
@@ -25,9 +23,9 @@ if __name__ == '__main__':
         Scraper(status_invest_url, f'StatusInvest_{date.today()}.csv').download_csv()
         Scraper(invest_site_url, f'InvestSite_{date.today()}.csv').generate_csv()
 
-
-    print(f'{c.OKBLUE}Connecting to database ...{c.ENDC}')
-    User(input('Enter user: '), getpass.getpass('Enter password: '))
-
-    shutil.rmtree('__pycache__')
-    print(f'{c.OKBLUE}End of program.{c.ENDC}')
+    if input('Do you want to run the database? (y/n): ').lower() == 'y':
+        c.clear_terminal()
+        print(f'\n{c.OKBLUE}Connecting to database ...{c.ENDC}')
+        User()
+    else:
+        c.exit_program()

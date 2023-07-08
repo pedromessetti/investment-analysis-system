@@ -1,56 +1,12 @@
 import mysql.connector
 import utils as c
-import re
+
 
 class Database:
-    def __init__(self, host, user, password, database):
-        self.host = host
-        self.user = user
-        self.password = password
-        self.database = database
 
-
-    def connect_to_mysql(host, user, password):
-        try:
-            connection = mysql.connector.connect(
-                host=host,
-                user=user,
-                password=password
-            )
-            print(f"\n{c.OKGREEN}MySQL Connection {c.OK}{c.ENDC}\n")
-            return connection
-        except mysql.connector.Error as error:
-            print(f"{c.CROSSMARK}Failed: {error}{c.ENDC}")
-            exit(1)
-
-
-    def connect_to_database(connection, database):
-        try:
-            connection.database = database
-            print(f"Database: {c.BOLD}{database}{c.ENDC}\n{c.OKGREEN}Connection {c.OK}{c.ENDC}\n")
-        except mysql.connector.Error as error:
-            print(f"{c.CROSSMARK}Failed to connect to database '{database}': {error}{c.ENDC}")
-            exit(1)
-
-
-    def create_database(connection, database):
+    def create_table(connection):
         cursor = connection.cursor()
-        cursor.execute(f"SHOW DATABASES LIKE '{database}'")
-        result = cursor.fetchone()
-
-        if not result:
-            try:
-                cursor.execute(f"CREATE DATABASE {database}")
-                print(f"{c.CHECKMARK}Database '{database}' created{c.ENDC}")
-            except mysql.connector.Error as error:
-                print(f"{c.CROSSMARK}Failed to create database: {error}{c.ENDC}")
-                exit(1)
-
-        cursor.close()
-
-
-    def create_table(connection, table):
-        cursor = connection.cursor()
+        table = input(f"{c.ENDC}Table name: {c.BOLD}")
         cursor.execute(f"SHOW TABLES LIKE '{table}'")
         result = cursor.fetchone()
         query = f'''
@@ -86,18 +42,21 @@ class Database:
             try:
                 cursor.execute(query)
                 print(f"{c.CHECKMARK}Table '{table}' created")
+                if input(f"{c.ENDC}Press ENTER to continue..."):
+                    pass
             except mysql.connector.Error as error:
                 print(f"{c.CROSSMARK}Failed to create table: {error}{c.ENDC}")
-                exit(1)
+                if input(f"{c.ENDC}Press ENTER to continue..."):
+                    pass
         else:
             print(f"{c.WARNING}Table '{table}' already exists{c.ENDC}")
-
+            if input(f"{c.ENDC}Press ENTER to continue..."):
+                pass
         cursor.close()
 
 
     def insert_data(connection, table, df):
         cursor = connection.cursor()
-
         # Get the column names from the table schema, excluding 'id'
         cursor.execute(f"DESCRIBE {table}")
         columns = [column[0] for column in cursor.fetchall() if column[0] != 'id']
@@ -127,9 +86,12 @@ class Database:
             print(f"{c.CHECKMARK}Data from {df['fonte'][0]} inserted{c.ENDC}")
         except mysql.connector.Error as error:
             print(f"{c.CROSSMARK}Failed to insert data from {df['fonte'][0]}: {error}{c.ENDC}")
+        cursor.close()
 
-    def drop_table(connection, table):
+
+    def drop_table(connection):
         cursor = connection.cursor()
+        table = input(f"{c.ENDC}Table name: {c.BOLD}")
         cursor.execute(f"SHOW TABLES LIKE '{table}'")
         result = cursor.fetchone()
 
@@ -137,10 +99,26 @@ class Database:
             try:
                 cursor.execute(f"DROP TABLE {table}")
                 print(f"{c.CHECKMARK}Table '{table}' deleted{c.ENDC}")
+                if input(f"{c.ENDC}Press ENTER to continue..."):
+                    pass
             except mysql.connector.Error as error:
                 print(f"{c.CROSSMARK}Failed to drop table: {error}{c.ENDC}")
-                exit(1)
+                if input(f"{c.ENDC}Press ENTER to continue..."):
+                    pass
         else:
             print(f"{c.WARNING}Table '{table}' does not exist{c.ENDC}")
+            if input(f"{c.ENDC}Press ENTER to continue..."):
+                pass
+        cursor.close()
 
+    
+    def show_tables(connection):
+        cursor = connection.cursor()
+        cursor.execute("SHOW TABLES")
+        result = cursor.fetchall()
+        print(f"{c.ENDC}Tables:")
+        for table in result:
+            print(f"{c.STAR}{c.WHITE}{table[0]}{c.ENDC}")
+        if input(f"{c.ENDC}Press ENTER to continue..."):
+            pass
         cursor.close()
