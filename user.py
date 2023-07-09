@@ -1,10 +1,11 @@
-import mysql.connector
-import os
+from cleaner import Cleaner
 from db import Database
-import utils as c
+import mysql.connector
 import pandas as pd
-from utils import Cleaner
+import var as v
 import getpass
+import utils
+import os
 
 
 class User:
@@ -31,15 +32,15 @@ class User:
                     user=user,
                     password=password
                 )
-                print(f"{c.OKGREEN}MySQL Connection {c.OK}{c.ENDC}\n")
+                print(f"{v.OKGREEN}MySQL Connection {v.OK}{v.ENDC}\n")
                 return user, password, connection
             except mysql.connector.Error as error:
-                c.clear_terminal()
-                print(f"{c.CROSSMARK}Failed: {error}{c.ENDC}")
+                utils.clear_terminal()
+                print(f"{v.CROSSMARK}Failed: {error}{v.ENDC}")
                 if input("\nRetry? (y/n) ").lower() != "y":
-                    c.exit_program()
+                    utils.exit_program()
                 else:
-                    c.clear_terminal()
+                    utils.clear_terminal()
 
 
     def check_database(self):
@@ -49,69 +50,72 @@ class User:
         if not result:
             try:
                 self.cursor.execute(f"CREATE DATABASE {self.database}")
-                print(f"{c.CHECKMARK}Database '{self.database}' created{c.ENDC}")
-                if input(f"{c.ENDC}Press ENTER to continue..."):
+                print(f"{v.CHECKMARK}Database '{self.database}' created{v.ENDC}")
+                if input(f"{v.PRESSENT}"):
                     pass
             except mysql.connector.Error as error:
-                print(f"{c.CROSSMARK}Failed to create database: {error}{c.ENDC}")
-                c.exit_program()
+                print(f"{v.CROSSMARK}Failed to create database: {error}{v.ENDC}")
+                utils.exit_program()
         else:
             try:
                 self.connection.database = self.database
-                print(f"Database: {c.BOLD}{self.database}{c.ENDC}\n{c.OKGREEN}Connection {c.OK}{c.ENDC}\n")
-                if input(f"{c.ENDC}Press ENTER to continue..."):
+                print(f"Database: {v.BOLD}{self.database}{v.ENDC}\n{v.OKGREEN}Connection {v.OK}{v.ENDC}")
+                if input(f"{v.PRESSENT}"):
                     pass
             except mysql.connector.Error as error:
-                print(f"{c.CROSSMARK}Failed to connect to database '{self.database}': {error}{c.ENDC}")
-                c.exit_program()
+                print(f"{v.CROSSMARK}Failed to connect to database '{self.database}': {error}{v.ENDC}")
+                utils.exit_program()
 
 
     def get_option(self):
         while True:
-            c.clear_terminal()
-            print(f"{c.MENU}")
-            option = input(f"Your option: {c.BOLD}")
+            utils.clear_terminal()
+            print(f"{v.MENU}")
+            option = input(f"Your option: {v.BOLD}")
             if option == '0':
                 self.connection.close()
-                c.exit_program()
-            if option == '1':
-                c.clear_terminal()
-                print(f"{c.OKBLUE}Create table ...\n{c.ENDC}")
+                utils.exit_program()
+            elif option == '1':
+                utils.clear_terminal()
+                print(f"{v.OKBLUE}Create table ...\n{v.ENDC}")
                 Database.create_table(self.connection)
             elif option == '2':
-                c.clear_terminal()
-                print(f"{c.OKBLUE}Insert into table ...\n{c.ENDC}")
-                table = input(f"{c.ENDC}Table name: {c.BOLD}")
+                utils.clear_terminal()
+                print(f"{v.OKBLUE}Insert into ...\n{v.ENDC}")
+                table = input(f"{v.ENDC}Table name: {v.BOLD}")
                 self.cursor.execute(f"SHOW TABLES LIKE '{table}'")
                 result = self.cursor.fetchone()
                 if result:
-                    for file in os.listdir('./csv'):
+                    for source in v.sources:
                         try:
-                            df = pd.read_csv(f'./csv/{file}')
-                            df['fonte'] = file.split('_')[0]
-                            df['data'] = file.split('_')[1].split('.')[0]
-                            if file.split('_')[0] == 'Fundamentus':
-                                df = Cleaner(df).fundamentus()
-                                df = Cleaner(df).div()
-                            elif file.split('_')[0] == 'StatusInvest':
-                                df = Cleaner(df).status_invest()
-                                df = Cleaner(df).div()
-                            elif file.split('_')[0] == 'InvestSite':
-                                df = Cleaner(df).invest_site()
-                                df = Cleaner(df).div()
+                            df = pd.read_csv(f'./csv/{source["file_name"]}')
+                            df['fonte'] = source['name']
+                            df['data'] = source['file_name'].split('_')[1].split('.')[0]
+                            df = Cleaner(df).clean()
                             Database.insert_data(self.connection, table, df)
-                            input(f"{c.ENDC}Press ENTER to continue...")
+                            input(f"{v.PRESSENT}")
                         except pd.errors.ParserError as er:
-                            print(f"{c.CROSSMARK}Failed: {er}{c.ENDC}")
+                            print(f"{v.CROSSMARK}Failed: {er}{v.ENDC}")
                 else:
-                    print(f"{c.CROSSMARK}Table '{table}' not found{c.ENDC}")
-                    if input(f"{c.ENDC}Press ENTER to continue..."):
+                    print(f"{v.CROSSMARK}Table '{table}' not found{v.ENDC}")
+                    if input(f"{v.PRESSENT}"):
                         pass
             elif option == '3':
-                c.clear_terminal()
-                print(f"{c.OKBLUE}Remove table ...\n{c.ENDC}")
+                utils.clear_terminal()
+                print(f"{v.OKBLUE}Remove table ...\n{v.ENDC}")
                 Database.drop_table(self.connection)
             elif option == '4':
-                c.clear_terminal()
-                print(f"{c.OKBLUE}Show table ...\n{c.ENDC}")
+                utils.clear_terminal()
                 Database.show_tables(self.connection)
+            elif option == '5':
+                utils.clear_terminal()
+                print(f"{v.OKBLUE}View table ...\n{v.ENDC}")
+                Database.view_table(self.connection)
+            elif option == '6':
+                utils.clear_terminal()
+                print(f"{v.OKBLUE}Show columns from ...\n{v.ENDC}")
+                Database.describe_table(self.connection)
+            elif option == '7':
+                utils.clear_terminal()
+                print(f"{v.OKBLUE}Select from table ...\n{v.ENDC}")
+                Database.select_from_table(self.connection)

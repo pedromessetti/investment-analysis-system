@@ -1,2 +1,2 @@
-# Open a new terminal
-gnome-terminal -e "python3.10 main.py"
+#!/bin/bash
+gnome-terminal --command="python3.10 main.py"

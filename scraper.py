@@ -1,9 +1,10 @@
+from bs4 import BeautifulSoup
+from datetime import date
+import var as v
+import requests
 import shutil
 import csv
-import requests
-import utils as c
-from datetime import date
-from bs4 import BeautifulSoup
+
 
 class Scraper:
     def __init__(self, url, file_name):
@@ -13,7 +14,14 @@ class Scraper:
         try:
             self.response = requests.get(self.url, headers=self.headers)
         except requests.exceptions.ConnectionError as error:
-            print(f'{c.CROSSMARK}{self.file_name}\nError: {c.ENDC}{error}')
+            print(f'{v.CROSSMARK}{self.file_name}\nError: {v.ENDC}{error}')
+
+    
+    def run(self, type):
+        if type == 'download':
+            self.download_csv()
+        if type == 'generate':
+            self.generate_csv()
 
 
     def generate_csv(self):
@@ -46,11 +54,11 @@ class Scraper:
                         writer.writerows(rows)
 
                 shutil.move(self.file_name, 'csv/' + self.file_name)
-                print(f'{c.CHECKMARK}{self.file_name}{c.ENDC}')
+                print(f'{v.CHECKMARK}{self.file_name}{v.ENDC}')
             else:
-                print(f'{c.CROSSMARK}{self.file_name}\nError: Response Status Code {c.BOLD}{self.response.status_code}{c.ENDC}')
+                print(f'{v.CROSSMARK}{self.file_name}\nError: Response Status Code {v.BOLD}{self.response.status_code}{v.ENDC}')
         except Exception as error:
-            print(f'{c.CROSSMARK}{self.file_name}\nError: {c.ENDC}{error}')
+            print(f'{v.CROSSMARK}{self.file_name}\nError: {v.ENDC}{error}')
             if input("Press Enter to continue..."):
                 pass
 
@@ -75,8 +83,8 @@ class Scraper:
                     writer.writerows(modified_rows)
 
                 shutil.move(self.file_name, 'csv/' + self.file_name)
-                print(f'{c.CHECKMARK}{self.file_name}{c.ENDC}')
+                print(f'{v.CHECKMARK}{self.file_name}{v.ENDC}')
             else:
-                print(f'{c.CROSSMARK}{self.file_name}\nError: Response Status Code {c.BOLD}{self.response.status_code}{c.ENDC}')
+                print(f'{v.CROSSMARK}{self.file_name}\nError: Response Status Code {v.BOLD}{self.response.status_code}{v.ENDC}')
         except Exception as error:
-            print(f'{c.CROSSMARK}{self.file_name}\nError: {c.ENDC}{error}')
+            print(f'{v.CROSSMARK}{self.file_name}\nError: {v.ENDC}{error}')
