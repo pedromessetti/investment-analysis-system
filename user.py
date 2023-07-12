@@ -13,7 +13,7 @@ class User:
         self.user,self.password, self.connection = User.get_user()
         self.cursor = self.connection.cursor()
 
-        self.database = 'investment_analysis'
+        self.database = 'test'
         User.check_database(self)
         self.connection.database = self.database
 
